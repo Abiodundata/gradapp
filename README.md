@@ -1,6 +1,6 @@
 # GradApp
 
-GradApp helps prospective graduate students discover programs, get personalized
+GradApp helps prospective graduate students discover graduate programs, get personalized
 recommendations, find potential advisors and funding, compare options, and track
 application deadlines. It is built by team **DevCave** for COSC 6370 (Advanced Software Engineering).
 
