@@ -12,8 +12,54 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", "username", "email", "first_name", "last_name")
-        read_only_fields = ("id",)
+        fields = ("id", "username", "email", "first_name", "last_name", "is_staff")
+        read_only_fields = ("id", "is_staff")
+
+
+class ManagedUserSerializer(serializers.ModelSerializer):
+    """Used by administrators for the Manage Users use case."""
+
+    has_profile = serializers.SerializerMethodField()
+    saved_program_count = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = (
+            "id",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "is_active",
+            "is_staff",
+            "date_joined",
+            "last_login",
+            "has_profile",
+            "saved_program_count",
+        )
+        read_only_fields = (
+            "id",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "date_joined",
+            "last_login",
+            "has_profile",
+            "saved_program_count",
+        )
+
+    def get_has_profile(self, obj):
+        return hasattr(obj, "student_profile")
+
+    def validate(self, attrs):
+        request = self.context.get("request")
+        if request and self.instance and self.instance.pk == request.user.pk:
+            if attrs.get("is_active") is False or attrs.get("is_staff") is False:
+                raise serializers.ValidationError(
+                    "You cannot deactivate or remove administrator access from your own account."
+                )
+        return attrs
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -32,6 +78,11 @@ class RegisterSerializer(serializers.ModelSerializer):
             "password_confirm",
         )
         read_only_fields = ("id",)
+
+    def validate_username(self, value):
+        if User.objects.filter(username__iexact=value.strip()).exists():
+            raise serializers.ValidationError("This username is already taken.")
+        return value.strip()
 
     def validate_email(self, value):
         normalized = value.strip().lower()

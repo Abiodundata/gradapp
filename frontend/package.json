@@ -1,17 +1,26 @@
 {
   "name": "gradapp-frontend",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "vitest run"
   },
   "dependencies": {
-    "vite": "5.4.20",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.30.6"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.12",
+    "@vitejs/plugin-react": "4.7.0",
+    "jsdom": "25.0.1",
+    "vite": "5.4.20",
+    "vitest": "2.1.9"
+  }
 }

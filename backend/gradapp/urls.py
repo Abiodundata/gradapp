@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework_simplejwt.views import TokenRefreshView
 
+from accounts.urls import router as admin_router
 from accounts.views import HealthCheckView, LoginView, LogoutView
 
 
@@ -12,5 +13,8 @@ urlpatterns = [
     path("api/auth/login/", LoginView.as_view(), name="login"),
     path("api/auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/auth/logout/", LogoutView.as_view(), name="logout"),
+    path("api/admin/", include(admin_router.urls)),
     path("api/", include("programs.urls")),
+    path("api/", include("planner.urls")),
+    path("api/", include("assistant.urls")),
 ]

@@ -1,6 +1,25 @@
 from django.contrib import admin
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .models import StudentProfile
+
+
+User = get_user_model()
+
+
+class StudentProfileInline(admin.StackedInline):
+    model = StudentProfile
+    can_delete = False
+    extra = 0
+
+
+admin.site.unregister(User)
+
+
+@admin.register(User)
+class UserAdmin(BaseUserAdmin):
+    inlines = (StudentProfileInline,)
 
 
 @admin.register(StudentProfile)

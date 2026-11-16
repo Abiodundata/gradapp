@@ -9,4 +9,16 @@ if [ -n "${POSTGRES_HOST:-}" ]; then
 fi
 
 python manage.py migrate --noinput
+
+if [ "${SEED_SAMPLE_DATA:-false}" = "true" ]; then
+  python manage.py seed_programs
+fi
+
+if [ -n "${DJANGO_SUPERUSER_USERNAME:-}" ] && [ -n "${DJANGO_SUPERUSER_PASSWORD:-}" ]; then
+  python manage.py createsuperuser --noinput \
+    --username "$DJANGO_SUPERUSER_USERNAME" \
+    --email "${DJANGO_SUPERUSER_EMAIL:-admin@example.com}" 2>/dev/null \
+    || echo "Administrator account already exists."
+fi
+
 exec "$@"

@@ -4,3 +4,8 @@ djangorestframework-simplejwt==5.5.1
 django-cors-headers==4.9.0
 psycopg[binary]==3.2.10
 gunicorn==23.0.0
+whitenoise==6.11.0
+requests==2.32.5
+beautifulsoup4==4.14.2
+openai==3.51.0
+dj-database-url==3.1.2
